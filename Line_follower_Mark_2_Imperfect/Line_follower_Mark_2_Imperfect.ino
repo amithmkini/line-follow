@@ -17,6 +17,8 @@ enable = 11
  white < 600
  */
 
+//This is a test comment.
+
 int in[5];
 const int enable = 11, lmf = 10,lmb = 12, rmf = 9, rmb = 8;
 
