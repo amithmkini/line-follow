@@ -26,17 +26,37 @@ void setup(){
         Serial.begin(9600);
 }
 
+/*
 void sensor_lights(){
         int x=0;
-        digitalWrite(13,LOW);
-        while(x < 5){
-                if(in[x] >= 600)
-                        digitalWrite(x+2,HIGH);
-                else
-                        digitalWrite(x+2,LOW);
-                x++;
-        }
+
+        if(in[0] >= 600)
+                digitalWrite(2,HIGH);
+        else
+                digitalWrite(2,LOW);
+                
+        if(in[1] >= 600)
+                digitalWrite(4,HIGH);
+        else
+                digitalWrite(4,LOW);
+                
+        if(in[2] >= 600)
+                digitalWrite(6,HIGH);
+        else
+                digitalWrite(6,LOW);
+                
+        if(in[3] >= 600)
+                digitalWrite(7,HIGH);
+        else
+                digitalWrite(7,LOW);
+                
+        if(in[4] >= 600)
+                digitalWrite(8,HIGH);
+        else
+                digitalWrite(8,LOW);
+                
 }
+*/
 
 void get_input(){
 	for(int i=0; i<5; i++){
