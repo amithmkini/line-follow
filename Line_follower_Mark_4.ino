@@ -8,10 +8,10 @@ rmb = 5
 sensor analogous pins.
 digital pin - analog sensor no.
 2           -       0
-3           -       1
-4           -       2
-5           -       3
-6           -       4
+4           -       1
+6           -       2
+7           -       3
+8           -       4
 
 black >= 600
 white < 600
