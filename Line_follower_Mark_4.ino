@@ -17,7 +17,8 @@ black >= 600
 white < 600
 */
 
-int in[5];
+int in[5], bitpos = 0;
+char loc[6];
 double kp = 300, ki = 0, kd = 300, prev_e_p=0, e_p=0, e_i=0, e_d=0, error=0, setpoint = 0, pos = 0;
 
 void setup(){
@@ -134,9 +135,54 @@ void line_follow(){
         //Serial.println(e_d);
 }
 
+void calc_bitpos(){
+  get_input();
+  int i=0;
+  while(i<5){
+    if( in[i] >= 600){
+      loc[i] = '1';
+    }
+    else{
+      loc[i] = '0';
+    }
+    i++;
+  }
+  
+  loc[i] = '\0';
+  
+  bitpos = atoi(loc);
+}
+
+void acute(){
+  calc_bitpos();
+  if(bitpos == 10100){
+    //AcuteLeft
+    do{
+      calc_bitpos();
+      digitalWrite(9,HIGH);
+      digitalWrite(5,LOW);
+      digitalWrite(10,LOW);
+      analogWrite(3,127.5);
+    }while(bitpos != 100);
+  }
+  else if(bitpos == 101){
+    //AcuteRight
+    do{
+      calc_bitpos();
+      digitalWrite(10,HIGH);
+      digitalWrite(3,LOW);
+      digitalWrite(9,LOW);
+      analogWrite(5,127.5);
+    }while(bitpos != 100);
+  }
+  else if(bitpos == 100){
+    line_follow();
+  }
+}
+
 void loop(){
-	get_input();
-        //sensor_lights();
-	line_follow();
-        //sensor_lights();
+  get_input();
+  acute();
+  line_follow();
+  //sensor_lights();
 }
