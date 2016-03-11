@@ -62,24 +62,18 @@ void sensor_lights(){
 void get_input(){
 	for(int i=0; i<5; i++){
 		in[i] = analogRead(i);
-		//Serial.print(in[i]);
-		//Serial.print("   ");
-        }
-//        Serial.println("");
+	}
 }
 
 double w_mean(){
 	static double sum = 0, wsum = 0;
 	sum = in[0] + in[1] + in[2] + in[3] + in[4];
 	wsum = in[1] + 2*in[2] + 3*in[3] + 4*in[4];
-	//wsum = 0*in[0] + 1*in[1] + 2*in[2] + 3*in[3] + 4*in[4];
-        //wsum = -2*in[0] + (-1*in[1]) + 0*in[2] + 1*in[3] + 2*in[4];
 	return wsum/sum;
 }
 
 void line_follow(){
 	//PID
-        
         
 	analogWrite(11,150);
 	
@@ -96,7 +90,7 @@ void line_follow(){
 	
 	e_d = e_p - prev_e_p;
 
-       // e_i = e_i + e_p;
+//     	e_i = e_i + e_p;
 
   	error =   kp*e_p + ki*e_i + kd*e_d;
         
@@ -106,22 +100,6 @@ void line_follow(){
                 error = 127.5;
         if(error<-127.5)
                 error = -127.5;
-        /*
-        if(error>=0)
-        {
-          analogWrite(10,127.5 + error);
-          digitalWrite(9,LOW);
-          digitalWrite(3,LOW);
-          analogWrite(5,12.75 + (error*0.1));
-        }
-        else if(error<0)
-        {
-          analogWrite(9,127.5 - error);
-          digitalWrite(10,LOW);
-          digitalWrite(5,LOW);
-          analogWrite(3,12.75 - (error*0.1));
-        }
-        */
                 
 	analogWrite(10, 127.5 + error);
 	analogWrite(9, 127.5- error);
@@ -131,58 +109,54 @@ void line_follow(){
         Serial.print(pos);
         Serial.print("   ");
         Serial.println(error);
-        //Serial.print("   ");
-        //Serial.println(e_d);
 }
 
 void calc_bitpos(){
-  get_input();
-  int i=0;
-  while(i<5){
-    if( in[i] >= 600){
-      loc[i] = '1';
-    }
-    else{
-      loc[i] = '0';
-    }
-    i++;
-  }
-  
-  loc[i] = '\0';
-  
-  bitpos = atoi(loc);
+  	get_input();
+  	int i=0;
+  	while(i<5){
+    		if( in[i] >= 600){
+      			loc[i] = '1';
+    		}
+    		else{
+      			loc[i] = '0';
+    		}
+    		i++;
+  	}
+  	loc[i] = '\0';
+  	bitpos = atoi(loc);
 }
 
 void acute(){
-  calc_bitpos();
-  if(bitpos == 10100){
-    //AcuteLeft
-    do{
-      calc_bitpos();
-      digitalWrite(9,HIGH);
-      digitalWrite(5,LOW);
-      digitalWrite(10,LOW);
-      analogWrite(3,127.5);
-    }while(bitpos != 100);
-  }
-  else if(bitpos == 101){
-    //AcuteRight
-    do{
-      calc_bitpos();
-      digitalWrite(10,HIGH);
-      digitalWrite(3,LOW);
-      digitalWrite(9,LOW);
-      analogWrite(5,127.5);
-    }while(bitpos != 100);
-  }
-  else if(bitpos == 100){
-    line_follow();
-  }
+  	calc_bitpos();
+  	if(bitpos == 10100){
+    	//AcuteLeft
+    		do{
+      			calc_bitpos();
+      			digitalWrite(9,HIGH);
+      			digitalWrite(5,LOW);
+      			digitalWrite(10,LOW);
+      			analogWrite(3,127.5);
+    		}while(bitpos != 100);
+	}
+  	else if(bitpos == 101){
+    	//AcuteRight
+    		do{
+      		calc_bitpos();
+      		digitalWrite(10,HIGH);
+      		digitalWrite(3,LOW);
+      		digitalWrite(9,LOW);
+      		analogWrite(5,127.5);
+    		}while(bitpos != 100);
+  	}
+  	else if(bitpos == 100){
+    		line_follow();
+  	}
 }
 
 void loop(){
-  get_input();
-  acute();
-  line_follow();
-  //sensor_lights();
+  	get_input();
+  	acute();
+  	line_follow();
+//  	sensor_lights();
 }
